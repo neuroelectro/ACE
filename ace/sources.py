@@ -14,6 +14,8 @@ import config
 import database
 import logging
 
+import copy
+
 logger = logging.getLogger(__name__)
 
 
@@ -44,7 +46,7 @@ class SourceManager:
         for source in self.sources.values():
             for patt in source.identifiers:
                 if re.search(patt, html):
-                    logger.debug('Matched article to Source: %s' % source.__class__.__name__)
+                    logger.info('Matched article to Source: %s' % source.__class__.__name__)
                     return source
 
 
@@ -83,8 +85,9 @@ class Source:
         config = json.load(open(config, 'rb'))
         self.database = database
         self.table_dir = table_dir
+        self.section = None
 
-        valid_keys = ['name', 'identifiers', 'entities', 'delay']
+        valid_keys = ['name', 'identifiers', 'entities', 'delay', 'section_tags']
 
         for k, v in config.items():
             if k in valid_keys:
@@ -96,6 +99,42 @@ class Source:
             self.entities = Source.ENTITIES
         else:
             self.entities.update(Source.ENTITIES)
+
+
+    def iterate_tags(self, soup):            
+        for section_name in self.section_tags.iterkeys():
+            if self.section == None:
+                self.section = []            
+            
+            current_section = database.Section()
+            current_section.article_id = self.article.id
+
+            tags = self.section_tags[section_name]
+            if type(tags) != list:
+                tags = [tags]                
+            for tag in tags:    
+                pattern = re.compile(section_name, re.IGNORECASE)
+                pointer = soup.find(tag, text=pattern)
+                current_section.title = section_name            
+                current_section.content = self.process_tag(pointer, tag)
+                if current_section.content == None:
+                    continue
+                element = copy.deepcopy(current_section)
+                self.section.append(element)
+
+
+    @abc.abstractmethod
+    def parse_section(self, tag, section_name, html, pmid=None, metadata_dir=None):
+        ''' Takes HTML article as input and returns specific sections according to 
+        a specified tag or string of text . '''
+        #soup = parse_article(html, pmid, metadata_dir)
+        print "SECTION PARSER NOT IMPLEMENTED FOR THIS SOURCE"
+        return None
+
+    def process_tag(self, pointer, tag):
+        ''' Takes a beautiful soup node 'pointer' and obtain section information. '''
+        print "TAG PROCESSOR NOT IMPLEMENTED FOR THIS SOURCE"
+        return None
 
     @abc.abstractmethod
     def parse_article(self, html, pmid=None, metadata_dir=None):
@@ -121,7 +160,10 @@ class Source:
                 self.database.delete_article(pmid)
             else:
                 return False
+
         self.article = database.Article(text, pmid=pmid, doi=doi, metadata=metadata)
+        #self.section = database.Section()
+
         return soup
 
     @abc.abstractmethod
@@ -224,6 +266,25 @@ class Source:
 
 
 class HighWireSource(Source):
+    
+    def process_tag(self, pointer, tag):
+        if pointer == None:
+            return None
+        else:
+            content = unicode( "<BR/>".join([unicode(x) for x in pointer.parent.contents] ))
+            return content
+                
+    def parse_section(self,
+                      html, 
+                      pmid=None, 
+                      **kwargs):
+
+        soup = super(HighWireSource, self).parse_article(html, pmid, **kwargs)
+        if soup == False:
+            return None
+        
+        self.iterate_tags(soup)
+        return self.section
 
     def parse_article(self, html, pmid=None, **kwargs):
         soup = super(HighWireSource, self).parse_article(html, pmid, **kwargs)
@@ -277,6 +338,30 @@ class HighWireSource(Source):
 
 class ScienceDirectSource(Source):
 
+    def process_tag(self, pointer, tag):
+        if pointer == None:
+            return None
+        else:
+            dump = []
+            while pointer.nextSibling.name != tag:                
+                    dump.append( unicode(pointer.next) )
+                    pointer = pointer.nextSibling
+
+            content = "<BR/>".join(dump)
+            return content
+                
+    def parse_section(self,
+                      html, 
+                      pmid=None, 
+                      **kwargs):
+        soup = super(ScienceDirectSource, self).parse_article(html, pmid, **kwargs)
+        if soup == False:
+            return None
+        
+        self.iterate_tags(soup)
+        return self.section
+
+
     def parse_article(self, html, pmid=None, **kwargs):
         soup = super(ScienceDirectSource, self).parse_article(html, pmid, **kwargs)
         if not soup:
@@ -314,7 +399,26 @@ class ScienceDirectSource(Source):
         return scrape.get_pmid_from_doi(self.extract_doi(soup))
 
 
-class PlosSource(Source):
+class PlosSource(Source):    
+    
+    def process_tag(self, pointer, tag):
+        if pointer == None:
+            return None
+        else:
+            content = unicode( "<BR/>".join([unicode(x) for x in pointer.parent.contents] ))
+            return content
+
+    def parse_section(self,
+                  html, 
+                  pmid=None, 
+                  **kwargs):
+
+        soup = super(PlosSource, self).parse_article(html, pmid, **kwargs)
+        if soup == False:
+            return None
+    
+        self.iterate_tags(soup)
+        return self.section 
 
     def parse_article(self, html, pmid=None, **kwargs):
         soup = super(PlosSource, self).parse_article(html, pmid, **kwargs)  # Do some preprocessing
@@ -354,6 +458,25 @@ class PlosSource(Source):
 
 
 class FrontiersSource(Source):
+
+    def process_tag(self, pointer, tag):
+        if pointer == None:
+            return None
+        else:
+            content = unicode( "<BR/>".join([unicode(x) for x in pointer.parent.contents] ))
+            return content
+
+    def parse_section(self,
+                      html, 
+                      pmid=None, 
+                      **kwargs):
+
+        soup = super(FrontiersSource, self).parse_article(html, pmid, **kwargs)
+        if soup == False:
+            return None
+
+        self.iterate_tags(soup)
+        return self.section
 
     def parse_article(self, html, pmid=None, **kwargs):
 
@@ -397,6 +520,14 @@ class FrontiersSource(Source):
 
 
 class JournalOfCognitiveNeuroscienceSource(Source):
+    def parse_section(self,
+                      tag, 
+                      section_name, 
+                      html, 
+                      pmid=None, 
+                      **kwargs):
+
+        return super(JournalOfCognitiveNeuroscienceSource, self).parse_section(tag, section_name, html, pmid, **kwargs)
 
     def parse_article(self, html, pmid=None, **kwargs):
         soup = super(
@@ -445,6 +576,14 @@ class JournalOfCognitiveNeuroscienceSource(Source):
 
 
 class WileySource(Source):
+    def parse_section(self,
+                      tag, 
+                      section_name, 
+                      html, 
+                      pmid=None, 
+                      **kwargs):
+
+        return super(WileySource, self).parse_section(tag, section_name, html, pmid, **kwargs)
 
     def parse_article(self, html, pmid=None, **kwargs):
 
@@ -495,6 +634,14 @@ class WileySource(Source):
 
 
 class SageSource(Source):
+    def parse_section(self,
+                      tag, 
+                      section_name, 
+                      html, 
+                      pmid=None, 
+                      **kwargs):
+
+        return super(SageSource, self).parse_section(tag, section_name, html, pmid, **kwargs)
 
     def parse_article(self, html, pmid=None, **kwargs):
 
@@ -545,6 +692,14 @@ class SageSource(Source):
 
 
 class SpringerSource(Source):
+    def parse_section(self,
+                      tag, 
+                      section_name, 
+                      html, 
+                      pmid=None, 
+                      **kwargs):
+
+        return super(SpringerSource, self).parse_section(tag, section_name, html, pmid, **kwargs)
 
     def parse_article(self, html, pmid=None, **kwargs):
 

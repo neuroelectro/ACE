@@ -7,5 +7,9 @@
   "entities": {
   	
   },
+  "section_tags": {
+      "Results": "h2", 
+      "Discussion": ["h2", "h3"]
+  },
   "delay": 10
 }

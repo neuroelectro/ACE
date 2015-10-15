@@ -5,5 +5,9 @@
   ],
   "entities": {
 
+  },
+  "section_tags": {
+      "Results": ["h2"],
+      "Discussion": ["h2"]
   }
 }

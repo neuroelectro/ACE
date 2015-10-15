@@ -4,5 +4,9 @@
     "<publisher-name>Public Library of Science</publisher-name>"
   ],
   "entities": {
+  },
+  "section_tags": {
+      "Results": ["h2", "title"],
+      "Discussion": ["title", "h2"]
   }
 }

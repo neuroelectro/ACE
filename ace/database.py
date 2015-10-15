@@ -105,8 +105,17 @@ class Database:
             try:
                 pmid = path.splitext(path.basename(f))[0] if pmid_filenames else None
                 article = source.parse_article(html, pmid, metadata_dir=metadata_dir)
+                
+                #results_section = source.parse_section("h2", "Results", html, pmid, metadata_dir=metadata_dir)
+                #results_section = source.parse_section("title", "Results", html, pmid, metadata_dir=metadata_dir)
+
+                results_sections = source.parse_section(html, pmid, metadata_dir=metadata_dir)
+
                 if article and (config.SAVE_ARTICLES_WITHOUT_ACTIVATIONS or article.tables):
                     self.add(article)
+                    if results_sections:
+                        for results_section in results_sections:
+                            self.add(results_section)
                     if commit and (i % 100 == 0 or i == len(files) - 1):
                         self.save()
             except Exception, err:
@@ -122,7 +131,8 @@ class Database:
         n_articles = self.session.query(Article).count()
         n_tables = self.session.query(Table).count()
         n_activations = self.session.query(Activation).count()
-        print "The database currently contains:\n\t%d articles\n\t%d tables\n\t%d activations" % (n_articles, n_tables, n_activations)
+        n_sections = self.session.query(Section).count()
+        print "The database currently contains:\n\t%d articles\n\t%d tables\n\t%d activations\n\t%d sections" % (n_articles, n_tables, n_activations, n_sections)
 
     def article_exists(self, pmid):
         ''' Check if an article already exists in the database. '''
@@ -226,6 +236,20 @@ class Table(Base):
         # self.activations = to_keep
 
         self.n_activations = len(self.activations)
+
+
+class Section(Base):
+
+    __tablename__ = 'sections'
+
+    id = Column(Integer, primary_key=True)
+    article_id = Column(Integer, ForeignKey('articles.id'))
+    title = Column(String(200))  
+    content = Column(Text)
+
+    def finalize(self):
+        ''' Any cleanup and updating operations we need to do before saving. '''
+        pass
 
 
 class Activation(Base):

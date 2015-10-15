@@ -6,5 +6,10 @@
   "entities": {
   	"&#x02212;": "-",
   	"&#x02009;": " "
+  },
+  "section_tags": {
+      "Results": ["title"], 
+      "Discussion": ["title"]
   }
+
 }
