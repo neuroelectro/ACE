@@ -339,6 +339,11 @@ class HighWireSource(Source):
 class ScienceDirectSource(Source):
 
     def process_tag(self, pointer, tag):
+        """
+        *pointer* is a node that matches the specified regex and tag for the section of interest.
+        If pointer exists, get all HTML nodes at the same level (siblings) as pointer until another node of type *tag* in encountered. 
+        Everything until this point is stored in the list *dump*, and then it is returned as a string of HTML content.
+        """
         if pointer == None:
             return None
         else:
