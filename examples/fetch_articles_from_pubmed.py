@@ -45,7 +45,7 @@ journals = {
 ace.set_logging_level('debug')
 
 # Create temporary output dir
-output_dir = '/tmp/articles'
+output_dir = '/home/mbelmadani/ace/'
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 

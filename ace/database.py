@@ -106,9 +106,6 @@ class Database:
                 pmid = path.splitext(path.basename(f))[0] if pmid_filenames else None
                 article = source.parse_article(html, pmid, metadata_dir=metadata_dir)
                 
-                #results_section = source.parse_section("h2", "Results", html, pmid, metadata_dir=metadata_dir)
-                #results_section = source.parse_section("title", "Results", html, pmid, metadata_dir=metadata_dir)
-
                 results_sections = source.parse_section(html, pmid, metadata_dir=metadata_dir)
 
                 if article and (config.SAVE_ARTICLES_WITHOUT_ACTIVATIONS or article.tables):
@@ -116,11 +113,37 @@ class Database:
                     if results_sections:
                         for results_section in results_sections:
                             self.add(results_section)
+
                     if commit and (i % 100 == 0 or i == len(files) - 1):
                         self.save()
             except Exception, err:
                 print traceback.format_exc()
 
+    def file_to_sections(self, filename, pmid=None, metadata_dir=None):
+        """
+        Filename is html text in file form
+        """
+        table_dir = None
+        manager = sources.SourceManager(self, table_dir)
+
+        html = open(filename).read()
+        source = manager.identify_source(html)
+
+        sections = False
+        try:
+
+            #article = source.parse_article(html, pmid, metadata_dir=metadata_dir)
+            config.OVERWRITE_EXISTING_ROWS = True
+            sections = source.parse_section(html, None, metadata_dir=metadata_dir)
+            
+            collection = {}
+            for k in sections:
+                collection[k.title] = k.content
+        
+        except:
+            print traceback.format_exc()
+        return collection
+    
     def delete_article(self, pmid):
         article = self.session.query(Article).filter_by(id=pmid).first()
         self.session.delete(article)
