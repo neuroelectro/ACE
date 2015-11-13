@@ -1,12 +1,21 @@
 {
-  "name": "Plos",
-  "identifiers": [
-    "<publisher-name>Public Library of Science</publisher-name>"
+    "name": "Plos",
+    "identifiers": [
+	"<publisher-name>Public Library of Science</publisher-name>"
   ],
-  "entities": {
+    "entities": {
   },
-  "section_tags": {
-      "Results": ["h2", "title"],
-      "Discussion": ["title", "h2"]
-  }
+    "section_tags": {
+	"results": {
+	    "Results": ["h2", "title"],
+	    "RESULTS": ["h2", "title"]
+	},
+	"importantstuff": {
+	    "Results": ["h2", "title"],
+	    "RESULTS": ["h2", "title"]
+	},
+	"discussion": {
+	    "Discussion": ["title", "h2"]
+	}
+    }
 }

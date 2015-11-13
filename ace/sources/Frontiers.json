@@ -8,8 +8,12 @@
   	"&#x02009;": " "
   },
   "section_tags": {
-      "Results": ["title"], 
-      "Discussion": ["title"]
+      "results": {
+	  "Results": ["title"]
+      },
+      "discussion": {
+	  "Discussion": ["title"]
+      }
   }
 
 }

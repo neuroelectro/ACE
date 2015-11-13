@@ -8,8 +8,12 @@
   	
   },
   "section_tags": {
-      "Results": "h2", 
-      "Discussion": ["h2", "h3"]
+      "results":{
+	  "Results": "h2"
+      },
+      "discussion": {
+	  "Discussion": ["h2", "h3"]
+      }
   },
   "delay": 10
 }

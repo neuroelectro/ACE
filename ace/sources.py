@@ -102,26 +102,26 @@ class Source:
 
 
     def iterate_tags(self, soup):            
-        for section_name in self.section_tags.iterkeys():
-            if self.section == None:
-                self.section = []            
-            
-            current_section = database.Section()
-            current_section.article_id = self.article.id
+        for section_name in self.section_tags:
+            for section_regex in self.section_tags[section_name]:                            
+                if self.section == None:
+                    self.section = []            
 
-            tags = self.section_tags[section_name]
-            if type(tags) != list:
-                tags = [tags]                
-            for tag in tags:    
-                pattern = re.compile(section_name, re.IGNORECASE)
-                pointer = soup.find(tag, text=pattern)
-                current_section.title = section_name            
-                current_section.content = self.process_tag(pointer, tag)
-                if current_section.content == None:
-                    continue
-                element = copy.deepcopy(current_section)
-                self.section.append(element)
-
+                current_section = database.Section()
+                current_section.article_id = self.article.id
+			
+			    tags = self.section_tags[section_name][section_regex]
+                if type(tags) != list:
+                    tags = [tags]                
+                for tag in tags:    
+                    pattern = re.compile(section_regex)
+                    pointer = soup.find(tag, text=pattern)
+                    current_section.title = section_name            
+                    current_section.content = self.process_tag(pointer, tag)
+                    if current_section.content == None:
+                        continue
+                    element = copy.deepcopy(current_section)
+                    self.section.append(element)
 
     @abc.abstractmethod
     def parse_section(self, tag, section_name, html, pmid=None, metadata_dir=None):
