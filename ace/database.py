@@ -119,7 +119,7 @@ class Database:
             except Exception, err:
                 print traceback.format_exc()
 
-    def file_to_sections(self, filename, pmid=None, metadata_dir=None):
+    def file_to_sections(self, filename, pmid=None, metadata_dir=None, source_name=None):
         """
         Filename is html text in file form
         """
@@ -127,18 +127,25 @@ class Database:
         manager = sources.SourceManager(self, table_dir)
 
         html = open(filename).read()
-        source = manager.identify_source(html)
+        print source_name
+        source = manager.identify_source(html, source_name)
 
         sections = False
+
+        collection = {}
         try:
 
             #article = source.parse_article(html, pmid, metadata_dir=metadata_dir)
-            config.OVERWRITE_EXISTING_ROWS = True
-            sections = source.parse_section(html, None, metadata_dir=metadata_dir)
-            
-            collection = {}
+            config.OVERWRITE_EXISTING_ROWS = False
+            sections = source.parse_section(html, pmid, metadata_dir=metadata_dir)
+            #article_parts = source.parse_article(html, pmid, metadata_dir=metadata_dir)
+
+
             for k in sections:
                 collection[k.title] = k.content
+            # print article_parts.tables
+            # for t in article_parts.tables:
+            #     collection["table"] = t.table_html
         
         except:
             print traceback.format_exc()

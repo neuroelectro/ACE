@@ -14,8 +14,8 @@ import sys
 ace.set_logging_level('info')
 
 # Change this to a valid path to a set of html files.
-#PATH_TO_FILES = "/home/mbelmadani/ace/html/*/*"
-filename = PATH_TO_FILE 
+#PATH_TO_FILES = "/home/stripathy/ace/html/*/*"
+filename = "/home/stripathy/ace/html/Frontiers in Cellular Neuroscience/25157218.html"
 
 # "/home/mbelmadani/ace/html/PLoS ONE/
 # 21347239.html"
@@ -26,3 +26,4 @@ sections = db.file_to_sections(filename)
 
 for k in sections.keys():
     print "Section:", k, "with", sys.getsizeof(sections[k]), "bytes of data"
+    print " \n"

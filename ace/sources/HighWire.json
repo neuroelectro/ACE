@@ -8,8 +8,14 @@
   	
   },
   "section_tags": {
+      "methods":{
+	    "MATERIALS AND METHODS": ["h2", "h3"],
+        "METHODS": ["h2", "h3"],
+        "Materials and Methods": ["h2", "h3"]
+      },
       "results":{
-	  "Results": "h2"
+	  "Results": ["h2", "h3"],
+        "RESULTS": ["h2", "h3"]
       },
       "discussion": {
 	  "Discussion": ["h2", "h3"]

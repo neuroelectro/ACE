@@ -10,7 +10,7 @@ from ace import database
 ace.set_logging_level('info')
 
 # Change this to a valid path to a set of html files.
-PATH_TO_FILES = "/home/mbelmadani/ace/html/*/*"
+PATH_TO_FILES = "/home/stripathy/ace/html/*/*"
 
 db = database.Database('sqlite')
 db.add_articles(PATH_TO_FILES)

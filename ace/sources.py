@@ -41,9 +41,13 @@ class SourceManager:
             cls = getattr(module, class_name + 'Source')(config_file, database, table_dir)
             self.sources[class_name] = cls
 
-    def identify_source(self, html):
+    def identify_source(self, html, provided_source = None):
         ''' Identify the source of the article and return the corresponding Source object. '''
         for source in self.sources.values():
+            if source.name == provided_source:
+                print 'returning %s' % source
+                return source
+            print source.name
             for patt in source.identifiers:
                 if re.search(patt, html):
                     logger.info('Matched article to Source: %s' % source.__class__.__name__)
@@ -110,7 +114,7 @@ class Source:
                 current_section = database.Section()
                 current_section.article_id = self.article.id
 			
-			    tags = self.section_tags[section_name][section_regex]
+                tags = self.section_tags[section_name][section_regex]
                 if type(tags) != list:
                     tags = [tags]                
                 for tag in tags:    
@@ -153,6 +157,10 @@ class Source:
         pmid = self.extract_pmid(soup) if pmid is None else pmid
         metadata = scrape.get_pubmed_metadata(pmid, store=metadata_dir, save=True)
 
+        # added hacks
+        doi = None
+        metadata = None
+
         # TODO: add Source-specific delimiting of salient text boundaries--e.g., exclude References
         text = soup.get_text()
         if self.database.article_exists(pmid):
@@ -161,7 +169,8 @@ class Source:
             else:
                 return False
 
-        self.article = database.Article(text, pmid=pmid, doi=doi, metadata=metadata)
+        #self.article = database.Article(text, pmid=pmid, doi=doi, metadata=metadata)
+        self.article = database.Article(text, 123)#, pmid=pmid, doi=doi, metadata=metadata)
         #self.section = database.Section()
 
         return soup
@@ -272,6 +281,8 @@ class HighWireSource(Source):
             return None
         else:
             content = unicode( "<BR/>".join([unicode(x) for x in pointer.parent.contents] ))
+            if len(content) < 2000:
+                content = unicode( "<BR/>".join([unicode(x) for x in pointer.parent.parent.contents] ))
             return content
                 
     def parse_section(self,
@@ -493,6 +504,7 @@ class FrontiersSource(Source):
         tables = []
         table_containers = soup.findAll(
             'table-wrap', {'id': re.compile('^T\d+$')})
+        print table_containers
         for (i, tc) in enumerate(table_containers):
             table_html = tc.find('table')
             t = self.parse_table(table_html)
@@ -501,6 +513,7 @@ class FrontiersSource(Source):
                 t.position = i + 1
                 t.number = tc['id'][1::].strip()
                 t.label = tc.find('label').get_text()
+                t.table_html = table_html
                 try:
                     t.caption = tc.find('caption').get_text()
                 except:
@@ -509,6 +522,7 @@ class FrontiersSource(Source):
                     t.notes = tc.find('table-wrap-foot').get_text()
                 except:
                     pass
+                print t
                 tables.append(t)
 
         self.article.tables = tables
