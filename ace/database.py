@@ -127,7 +127,6 @@ class Database:
         manager = sources.SourceManager(self, table_dir)
 
         html = open(filename).read()
-        print source_name
         source = manager.identify_source(html, source_name)
 
         sections = False
@@ -138,14 +137,13 @@ class Database:
             #article = source.parse_article(html, pmid, metadata_dir=metadata_dir)
             config.OVERWRITE_EXISTING_ROWS = False
             sections = source.parse_section(html, pmid, metadata_dir=metadata_dir)
-            #article_parts = source.parse_article(html, pmid, metadata_dir=metadata_dir)
-
+            article_parts = source.parse_article(html, pmid, metadata_dir=metadata_dir)
 
             for k in sections:
                 collection[k.title] = k.content
-            # print article_parts.tables
-            # for t in article_parts.tables:
-            #     collection["table"] = t.table_html
+            print article_parts.tables
+            for i, t in enumerate(article_parts.tables):
+                collection["table%d" % (i+1)] = t.table_html
         
         except:
             print traceback.format_exc()

@@ -357,7 +357,8 @@ def parse_table(data):
                 if activation.validate():
                     table.activations.append(activation)
     table.finalize()
-    return table if len(table.activations) else None
+    #return table if len(table.activations) else None
+    return table
 
 
 

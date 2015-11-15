@@ -6,16 +6,15 @@
     "entities": {
   },
     "section_tags": {
-	"results": {
-	    "Results": ["h2", "title"],
-	    "RESULTS": ["h2", "title"]
-	},
-	"importantstuff": {
-	    "Results": ["h2", "title"],
-	    "RESULTS": ["h2", "title"]
-	},
-	"discussion": {
-	    "Discussion": ["title", "h2"]
-	}
+      "methods": {
+        "MATERIALS AND METHODS": ["title","h2"],
+        "Methods": ["title","h2"]
+      },
+    "results": {
+	  "Results": ["title","h2"]
+      },
+      "discussion": {
+	    "Discussion": ["title","h2"]
+      }
     }
 }

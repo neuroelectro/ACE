@@ -44,10 +44,9 @@ class SourceManager:
     def identify_source(self, html, provided_source = None):
         ''' Identify the source of the article and return the corresponding Source object. '''
         for source in self.sources.values():
-            if source.name == provided_source:
-                print 'returning %s' % source
+            if provided_source and source.name.lower() == provided_source.lower():
+                # print 'returning %s' % source
                 return source
-            print source.name
             for patt in source.identifiers:
                 if re.search(patt, html):
                     logger.info('Matched article to Source: %s' % source.__class__.__name__)
@@ -277,14 +276,14 @@ class Source:
 class HighWireSource(Source):
     
     def process_tag(self, pointer, tag):
-        if pointer == None:
+        if not pointer:
             return None
         else:
             content = unicode( "<BR/>".join([unicode(x) for x in pointer.parent.contents] ))
-            if len(content) < 2000:
+            if len(content) < 200:
                 content = unicode( "<BR/>".join([unicode(x) for x in pointer.parent.parent.contents] ))
             return content
-                
+
     def parse_section(self,
                       html, 
                       pmid=None, 
@@ -329,6 +328,7 @@ class HighWireSource(Source):
                     t.notes = tc.find(class_='table-footnotes').get_text()
                 except:
                     pass
+                t.table_html = unicode(tc)
                 tables.append(t)
 
         self.article.tables = tables
@@ -352,18 +352,22 @@ class ScienceDirectSource(Source):
     def process_tag(self, pointer, tag):
         """
         *pointer* is a node that matches the specified regex and tag for the section of interest.
-        If pointer exists, get all HTML nodes at the same level (siblings) as pointer until another node of type *tag* in encountered. 
+        If pointer exists, get all HTML nodes at the same level (siblings) as pointer until another node of type *tag* in encountered.
         Everything until this point is stored in the list *dump*, and then it is returned as a string of HTML content.
         """
         if pointer == None:
             return None
-        else:
+        elif pointer.nextSibling:
             dump = []
-            while pointer.nextSibling.name != tag:                
-                    dump.append( unicode(pointer.next) )
+            while pointer.nextSibling and pointer.nextSibling.name != tag:
+                    dump.append( unicode(pointer.parent ))
                     pointer = pointer.nextSibling
-
             content = "<BR/>".join(dump)
+            return content
+        else:
+            content = unicode( "<BR/>".join([unicode(x) for x in pointer.parent.contents] ))
+            if len(content) < 200:
+                content = unicode( "<BR/>".join([unicode(x) for x in pointer.parent.parent.contents] ))
             return content
                 
     def parse_section(self,
@@ -400,6 +404,7 @@ class ScienceDirectSource(Source):
                     t.notes = tc.find(class_='tblFootnote').get_text()
                 except:
                     pass
+                t.table_html = table_html
                 tables.append(t)
 
         self.article.tables = tables
@@ -409,7 +414,10 @@ class ScienceDirectSource(Source):
         return super(ScienceDirectSource, self).parse_table(table)
 
     def extract_doi(self, soup):
-        return soup.find('a', {'id': 'ddDoi'})['href'].replace('http://dx.doi.org/', '')
+        try:
+            return soup.find('a', {'id': 'ddDoi'})['href'].replace('http://dx.doi.org/', '')
+        except:
+            return ''
 
     def extract_pmid(self, soup):
         return scrape.get_pmid_from_doi(self.extract_doi(soup))
@@ -458,6 +466,7 @@ class PlosSource(Source):
                     t.notes = tc.find('table-wrap-foot').get_text()
                 except:
                     pass
+                t.table_html = unicode(tc)
                 tables.append(t)
 
         self.article.tables = tables
@@ -513,7 +522,7 @@ class FrontiersSource(Source):
                 t.position = i + 1
                 t.number = tc['id'][1::].strip()
                 t.label = tc.find('label').get_text()
-                t.table_html = table_html
+                t.table_html = unicode(tc)
                 try:
                     t.caption = tc.find('caption').get_text()
                 except:
@@ -595,14 +604,27 @@ class JournalOfCognitiveNeuroscienceSource(Source):
 
 
 class WileySource(Source):
+
+    def process_tag(self, pointer, tag):
+        if not pointer:
+            return None
+        else:
+            content = unicode( "<BR/>".join([unicode(x) for x in pointer.parent.contents] ))
+            if len(content) < 200:
+                content = unicode( "<BR/>".join([unicode(x) for x in pointer.parent.parent.contents] ))
+            return content
+
     def parse_section(self,
-                      tag, 
-                      section_name, 
-                      html, 
-                      pmid=None, 
+                      html,
+                      pmid=None,
                       **kwargs):
 
-        return super(WileySource, self).parse_section(tag, section_name, html, pmid, **kwargs)
+        soup = super(WileySource, self).parse_article(html, pmid, **kwargs)
+        if soup == False:
+            return None
+
+        self.iterate_tags(soup)
+        return self.section
 
     def parse_article(self, html, pmid=None, **kwargs):
 
@@ -630,6 +652,8 @@ class WileySource(Source):
                 t.number = re.search('t[bl0\-]*(\d+)$', tc['id']).group(1)
                 t.label = tc.find('span', class_='label').get_text()
                 t.caption = tc.find('caption').get_text()
+                # adding table_html
+                t.table_html = unicode(tc)
                 try:
                     t.notes = footer.get_text()
                 except:
@@ -643,7 +667,10 @@ class WileySource(Source):
         return super(WileySource, self).parse_table(table)
 
     def extract_doi(self, soup):
-        return soup.find('meta', {'name': 'citation_doi'})['content']
+        try:
+            return soup.find('meta', {'name': 'citation_doi'})['content']
+        except:
+            return ''
 
     def extract_pmid(self, soup):
         return scrape.get_pmid_from_doi(self.extract_doi(soup))
