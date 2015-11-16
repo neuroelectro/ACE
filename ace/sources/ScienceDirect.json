@@ -14,7 +14,8 @@
 	  "Discussion": ["h2"]
       },
     "methods": {
-      "Experimental procedures": ["ce:section-title", "ce:section"]
+      "Experimental procedures": ["ce:section-title", "ce:section"],
+      "Experimental Procedures": ["ce:section-title", "ce:section"]
     }
 
   }

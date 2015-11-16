@@ -141,7 +141,6 @@ class Database:
 
             for k in sections:
                 collection[k.title] = k.content
-            print article_parts.tables
             for i, t in enumerate(article_parts.tables):
                 collection["table%d" % (i+1)] = t.table_html
         

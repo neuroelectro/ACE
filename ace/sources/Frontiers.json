@@ -10,7 +10,8 @@
   "section_tags": {
       "methods": {
         "MATERIALS AND METHODS": ["title"],
-        "Methods": ["title"]
+        "Methods": ["title"],
+        "Materials and methods": ["title"]
       },
     "results": {
 	  "Results": ["title"]

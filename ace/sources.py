@@ -125,9 +125,10 @@ class Source:
                         continue
                     element = copy.deepcopy(current_section)
                     self.section.append(element)
+        self.section = list(set(self.section))
 
     @abc.abstractmethod
-    def parse_section(self, tag, section_name, html, pmid=None, metadata_dir=None):
+    def parse_section(self, tag, section_name, html, pmid=None, metadata_dir=None, download_tables = True):
         ''' Takes HTML article as input and returns specific sections according to 
         a specified tag or string of text . '''
         #soup = parse_article(html, pmid, metadata_dir)
@@ -140,7 +141,7 @@ class Source:
         return None
 
     @abc.abstractmethod
-    def parse_article(self, html, pmid=None, metadata_dir=None):
+    def parse_article(self, html, pmid=None, metadata_dir=None, download_tables = True):
         ''' Takes HTML article as input and returns an Article. PMID Can also be 
         passed, which prevents having to scrape it from the article and/or look it 
         up in PubMed. '''
@@ -286,7 +287,7 @@ class HighWireSource(Source):
 
     def parse_section(self,
                       html, 
-                      pmid=None, 
+                      pmid=None,
                       **kwargs):
 
         soup = super(HighWireSource, self).parse_article(html, pmid, **kwargs)
@@ -301,37 +302,39 @@ class HighWireSource(Source):
         if not soup:
             return False
 
-        # To download tables, we need the content URL and the number of tables
-        content_url = soup.find('meta', {
-                                'name': 'citation_public_url'})['content']
+        download_tables = False
+        if download_tables:
+            # To download tables, we need the content URL and the number of tables
+            content_url = soup.find('meta', {
+                                    'name': 'citation_public_url'})['content']
 
-        n_tables = len(soup.find_all('span', class_='table-label'))
+            n_tables = len(soup.find_all('span', class_='table-label'))
 
-        # Now download each table and parse it
-        tables = []
-        for i in range(n_tables):
-            t_num = i + 1
-            url = '%s/T%d.expansion.html' % (content_url, t_num)
-            table_soup = self._download_table(url)
-            tc = table_soup.find(class_='table-expansion')
-            t = tc.find('table', {'id': 'table-%d' % (t_num)})
-            t = self.parse_table(t)
-            if t:
-                t.position = t_num
-                t.label = tc.find(class_='table-label').text
-                t.number = t.label.split(' ')[-1].strip()
-                try:
-                    t.caption = tc.find(class_='table-caption').get_text()
-                except:
-                    pass
-                try:
-                    t.notes = tc.find(class_='table-footnotes').get_text()
-                except:
-                    pass
-                t.table_html = unicode(tc)
-                tables.append(t)
+            # Now download each table and parse it
+            tables = []
+            for i in range(n_tables):
+                t_num = i + 1
+                url = '%s/T%d.expansion.html' % (content_url, t_num)
+                table_soup = self._download_table(url)
+                tc = table_soup.find(class_='table-expansion')
+                t = tc.find('table', {'id': 'table-%d' % (t_num)})
+                t = self.parse_table(t)
+                if t:
+                    t.position = t_num
+                    t.label = tc.find(class_='table-label').text
+                    t.number = t.label.split(' ')[-1].strip()
+                    try:
+                        t.caption = tc.find(class_='table-caption').get_text()
+                    except:
+                        pass
+                    try:
+                        t.notes = tc.find(class_='table-footnotes').get_text()
+                    except:
+                        pass
+                    t.table_html = unicode(tc)
+                    tables.append(t)
 
-        self.article.tables = tables
+            self.article.tables = tables
         return self.article
 
     def parse_table(self, table):
@@ -357,13 +360,13 @@ class ScienceDirectSource(Source):
         """
         if pointer == None:
             return None
-        elif pointer.nextSibling:
-            dump = []
-            while pointer.nextSibling and pointer.nextSibling.name != tag:
-                    dump.append( unicode(pointer.parent ))
-                    pointer = pointer.nextSibling
-            content = "<BR/>".join(dump)
-            return content
+        # elif pointer.nextSibling:
+        #     dump = []
+        #     while pointer.nextSibling and pointer.nextSibling.name != tag:
+        #             dump.append( unicode(pointer.parent ))
+        #             pointer = pointer.nextSibling
+        #     content = "<BR/>".join(dump)
+        #     return content
         else:
             content = unicode( "<BR/>".join([unicode(x) for x in pointer.parent.contents] ))
             if len(content) < 200:
