@@ -11,10 +11,13 @@
       "methods": {
         "MATERIALS AND METHODS": ["title"],
         "Methods": ["title"],
-        "Materials and methods": ["title"]
+        "METHODS": ["title"],
+        "Materials and methods": ["title"],
+        "Material and methods": ["title"]
       },
     "results": {
-	  "Results": ["title"]
+	  "Results": ["title"],
+      "RESULTS": ["title"]
       },
       "discussion": {
 	    "Discussion": ["title"]

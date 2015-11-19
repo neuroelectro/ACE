@@ -203,6 +203,10 @@ def parse_table(data):
     ''' Takes a DataTable as input and returns a Table instance. '''
 
     table = database.Table()
+
+    table.finalize()
+    #return table if len(table.activations) else None
+    return table
     n_cols = data.n_cols
 
     # Identify column names: first occurrence of unique (i.e. colspan=1) label.

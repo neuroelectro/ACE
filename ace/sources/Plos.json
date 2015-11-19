@@ -5,16 +5,20 @@
   ],
     "entities": {
   },
-    "section_tags": {
+  "section_tags": {
       "methods": {
-        "MATERIALS AND METHODS": ["title","h2"],
-        "Methods": ["title","h2"]
+        "MATERIALS AND METHODS": ["title"],
+        "Methods": ["title"],
+        "METHODS": ["title"],
+        "Materials and methods": ["title"],
+        "Material and methods": ["title"]
       },
     "results": {
-	  "Results": ["title","h2"]
+	  "Results": ["title"],
+      "RESULTS": ["title"]
       },
       "discussion": {
-	    "Discussion": ["title","h2"]
+	    "Discussion": ["title"]
       }
     }
 }

@@ -128,6 +128,9 @@ class Database:
 
         html = open(filename).read()
         source = manager.identify_source(html, source_name)
+        if source is None:
+            print "Can't identify source for %s" % filename
+            return None
 
         sections = False
 
@@ -142,7 +145,7 @@ class Database:
             for k in sections:
                 collection[k.title] = k.content
             for i, t in enumerate(article_parts.tables):
-                collection["table%d" % (i+1)] = t.table_html
+                collection["table%s" % (t.number)] = t.table_html
         
         except:
             print traceback.format_exc()

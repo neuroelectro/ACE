@@ -197,6 +197,10 @@ class Source:
 
         # Initialize grid and populate
         data = datatable.DataTable(0, n_cols)
+
+        logger.debug("\t\tTrying to parse table...")
+        return tableparser.parse_table(data)
+
         rows = table.find_all('tr')
         for (j, r) in enumerate(rows):
             try:
@@ -516,7 +520,6 @@ class FrontiersSource(Source):
         tables = []
         table_containers = soup.findAll(
             'table-wrap', {'id': re.compile('^T\d+$')})
-        print table_containers
         for (i, tc) in enumerate(table_containers):
             table_html = tc.find('table')
             t = self.parse_table(table_html)
@@ -534,7 +537,6 @@ class FrontiersSource(Source):
                     t.notes = tc.find('table-wrap-foot').get_text()
                 except:
                     pass
-                print t
                 tables.append(t)
 
         self.article.tables = tables
