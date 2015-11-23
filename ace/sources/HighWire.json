@@ -11,7 +11,12 @@
       "methods":{
 	    "MATERIALS AND METHODS": ["h2", "h3"],
         "METHODS": ["h2", "h3"],
-        "Materials and Methods": ["h2", "h3"]
+        "Methods": ["h2", "h3"],
+        "Method": ["h2", "h3"],
+        "Materials and Methods": ["h2", "h3"],
+        "Materials and methods": ["h2", "h3"],
+        "Material and Methods": ["h2", "h3"],
+        "Experimental Procedures": ["h2", "h3"]
       },
       "results":{
 	  "Results": ["h2", "h3"],
@@ -21,5 +26,5 @@
 	  "Discussion": ["h2", "h3"]
       }
   },
-  "delay": 10
+  "delay": 20
 }
