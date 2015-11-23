@@ -204,9 +204,9 @@ def parse_table(data):
 
     table = database.Table()
 
-    table.finalize()
+    #table.finalize()
     #return table if len(table.activations) else None
-    return table
+    #return table
     n_cols = data.n_cols
 
     # Identify column names: first occurrence of unique (i.e. colspan=1) label.

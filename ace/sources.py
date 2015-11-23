@@ -293,7 +293,6 @@ class HighWireSource(Source):
                       html, 
                       pmid=None,
                       **kwargs):
-
         soup = super(HighWireSource, self).parse_article(html, pmid, **kwargs)
         if soup == False:
             return None
@@ -306,39 +305,38 @@ class HighWireSource(Source):
         if not soup:
             return False
 
-        download_tables = False
-        if download_tables:
-            # To download tables, we need the content URL and the number of tables
-            content_url = soup.find('meta', {
-                                    'name': 'citation_public_url'})['content']
+        # To download tables, we need the content URL and the number of tables
+        content_url = soup.find('meta', {
+                                'name': 'citation_public_url'})['content']
 
-            n_tables = len(soup.find_all('span', class_='table-label'))
+        n_tables = len(soup.find_all('span', class_='table-label'))
 
-            # Now download each table and parse it
-            tables = []
-            for i in range(n_tables):
-                t_num = i + 1
-                url = '%s/T%d.expansion.html' % (content_url, t_num)
-                table_soup = self._download_table(url)
-                tc = table_soup.find(class_='table-expansion')
-                t = tc.find('table', {'id': 'table-%d' % (t_num)})
-                t = self.parse_table(t)
-                if t:
-                    t.position = t_num
-                    t.label = tc.find(class_='table-label').text
-                    t.number = t.label.split(' ')[-1].strip()
-                    try:
-                        t.caption = tc.find(class_='table-caption').get_text()
-                    except:
-                        pass
-                    try:
-                        t.notes = tc.find(class_='table-footnotes').get_text()
-                    except:
-                        pass
-                    t.table_html = unicode(tc)
-                    tables.append(t)
+        # Now download each table and parse it
+        tables = []
+        for i in range(n_tables):
+            t_num = i + 1
+            url = '%s/T%d.expansion.html' % (content_url, t_num)
+            table_soup = self._download_table(url)
+            tc = table_soup.find(class_='table-expansion')
+            t = tc.find('table', {'id': 'table-%d' % (t_num)})
+            t = database.Table()
+            # t = self.parse_table(t)
+            if t:
+                t.position = t_num
+                t.label = tc.find(class_='table-label').text
+                t.number = t.label.split(' ')[-1].strip()
+                try:
+                    t.caption = tc.find(class_='table-caption').get_text()
+                except:
+                    pass
+                try:
+                    t.notes = tc.find(class_='table-footnotes').get_text()
+                except:
+                    pass
+                t.table_html = unicode(tc)
+                tables.append(t)
 
-            self.article.tables = tables
+        self.article.tables = tables
         return self.article
 
     def parse_table(self, table):
@@ -522,7 +520,8 @@ class FrontiersSource(Source):
             'table-wrap', {'id': re.compile('^T\d+$')})
         for (i, tc) in enumerate(table_containers):
             table_html = tc.find('table')
-            t = self.parse_table(table_html)
+            #t = self.parse_table(table_html)
+            t = database.Table()
             # If Table instance is returned, add other properties
             if t:
                 t.position = i + 1

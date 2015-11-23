@@ -119,7 +119,7 @@ class Database:
             except Exception, err:
                 print traceback.format_exc()
 
-    def file_to_sections(self, filename, pmid=None, metadata_dir=None, source_name=None):
+    def file_to_sections(self, filename, pmid=None, metadata_dir=None, source_name=None, get_tables = False):
         """
         Filename is html text in file form
         """
@@ -137,15 +137,17 @@ class Database:
         collection = {}
         try:
 
-            #article = source.parse_article(html, pmid, metadata_dir=metadata_dir)
             config.OVERWRITE_EXISTING_ROWS = False
             sections = source.parse_section(html, pmid, metadata_dir=metadata_dir)
-            article_parts = source.parse_article(html, pmid, metadata_dir=metadata_dir)
-
             for k in sections:
                 collection[k.title] = k.content
-            for i, t in enumerate(article_parts.tables):
-                collection["table%s" % (t.number)] = t.table_html
+
+            if get_tables:
+                article_parts = source.parse_article(html, pmid, metadata_dir=metadata_dir)
+                for i, t in enumerate(article_parts.tables):
+                    collection["table%s" % (t.number)] = t.table_html
+
+
         
         except:
             print traceback.format_exc()
