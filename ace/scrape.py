@@ -21,7 +21,11 @@ logger = logging.getLogger(__name__)
 def get_url(url, delay=0.0, verbose=False):
     headers = {'User-Agent': config.USER_AGENT_STRING}
     sleep(delay)
-    r = requests.get(url, headers=headers, timeout=5.0)
+    try:
+        r = requests.get(url, headers=headers, timeout=5.0)
+    except requests.exceptions.RequestException as e:
+        sleep(delay * 3)
+        r = requests.get(url, headers=headers, timeout=10.0)
     return r.text
 
 
@@ -271,6 +275,9 @@ class Scraper:
             else:
                 return url
         except Exception, e:
+
+
+
             return url
 
 

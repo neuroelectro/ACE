@@ -153,9 +153,9 @@ class Source:
         html = html.decode('utf-8')   # Make sure we're working with unicode
         html = self.decode_html_entities(html)
         soup = BeautifulSoup(html)
-        doi = self.extract_doi(soup)
-        pmid = self.extract_pmid(soup) if pmid is None else pmid
-        metadata = scrape.get_pubmed_metadata(pmid, store=metadata_dir, save=True)
+        # doi = self.extract_doi(soup)
+        # pmid = self.extract_pmid(soup) if pmid is None else pmid
+        # metadata = scrape.get_pubmed_metadata(pmid, store=metadata_dir, save=True)
 
         # added hacks
         doi = None
@@ -163,11 +163,11 @@ class Source:
 
         # TODO: add Source-specific delimiting of salient text boundaries--e.g., exclude References
         text = soup.get_text()
-        if self.database.article_exists(pmid):
-            if config.OVERWRITE_EXISTING_ROWS:
-                self.database.delete_article(pmid)
-            else:
-                return False
+        # if self.database.article_exists(pmid):
+        #     if config.OVERWRITE_EXISTING_ROWS:
+        #         self.database.delete_article(pmid)
+        #     else:
+        #         return False
 
         #self.article = database.Article(text, pmid=pmid, doi=doi, metadata=metadata)
         self.article = database.Article(text, 123)#, pmid=pmid, doi=doi, metadata=metadata)
@@ -396,7 +396,8 @@ class ScienceDirectSource(Source):
         tables = []
         for (i, tc) in enumerate(soup.find_all('dl', {'class': 'table '})):
             table_html = tc.find('table')
-            t = self.parse_table(table_html)
+            t = database.Table()
+            #t = self.parse_table(table_html)
             if t:
                 t.position = i + 1
                 t.number = tc['data-label'].split(' ')[-1].strip()
@@ -458,7 +459,8 @@ class PlosSource(Source):
         tables = []
         for (i, tc) in enumerate(soup.find_all('table-wrap')):
             table_html = tc.find('table')
-            t = self.parse_table(table_html)
+            t = database.Table()
+            #t = self.parse_table(table_html)
             if t:
                 t.position = i + 1
                 t.label = tc.find('label').text
@@ -648,7 +650,8 @@ class WileySource(Source):
                 footer = table_html.tfoot.extract()
             except:
                 pass
-            t = self.parse_table(table_html)
+            #t = self.parse_table(table_html)
+            t = database.Table()
             # If Table instance is returned, add other properties
             if t:
                 t.position = i + 1
