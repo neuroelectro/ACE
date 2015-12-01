@@ -13,6 +13,7 @@
         "Methods": ["title"],
         "METHODS": ["title"],
         "Materials and methods": ["title"],
+        "Materials and Methods": ["title"],
         "Material and methods": ["title"]
       },
     "results": {
