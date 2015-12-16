@@ -190,7 +190,8 @@ class Scraper:
                 driver.get(new_url)
                 if self.journal.lower() in ['human brain mapping',
                                             'european journal of neuroscience',
-                                            'brain and behavior','epilepsia']:
+                                            'brain and behavior','epilepsia', 'glia', 'j comp neurol',
+                                            'eur j neurosci', 'hippocampus', 'j physiol']:
                     sleep(0.5 + random() * 1)
                     try:
                         WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID, 'relatedArticles')))
@@ -262,7 +263,7 @@ class Scraper:
                 return 'http://journals.plos.org/plosone/article/asset?id=%s.XML' % doi_part
             elif j in ['human brain mapping', 'european journal of neuroscience',
                        'brain and behavior', 'epilepsia', 'journal of neuroimaging',
-                       'glia', 'hippocampus', 'eur j neurosci']:
+                       'glia', 'hippocampus', 'eur j neurosci', 'j comp neurol']:
                 return url.replace('abstract', 'full').split(';')[0]
             elif j == 'journal of cognitive neuroscience':
                 return url.replace('doi/abs', 'doi/full')

@@ -59,4 +59,5 @@ EXCLUDE_TABLES_WITH_MISSING_LABELS = False
 
 ''' SCRAPING/PARSING SETTINGS '''
 
-USER_AGENT_STRING = 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1464.0 Safari/537.36'
+#USER_AGENT_STRING = 'Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1464.0 Safari/537.36'
+USER_AGENT_STRING = 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36'

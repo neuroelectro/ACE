@@ -10,7 +10,13 @@
       "methods":{
 	    "MATERIALS AND METHODS": ["h2", "h3"],
         "METHODS": ["h2", "h3"],
-        "Materials and Methods": ["h2", "h3"]
+        "Methods": ["h2", "h3"],
+        "Method": ["h2", "h3"],
+        "Materials and Methods": ["h2", "h3"],
+        "Materials and methods": ["h2", "h3"],
+        "Material and Methods": ["h2", "h3"],
+        "Experimental Procedures": ["h2", "h3"],
+        "Experimental methods": ["h2", "h3"]
       },
       "results":{
 	  "Results": ["h2", "h3"],
@@ -18,6 +24,11 @@
       },
       "discussion": {
 	  "Discussion": ["h2", "h3"]
+      },
+      "references": {
+	    "LITERATURE CITED": ["h2", "h3", "h4"],
+        "REFERENCES": ["h2", "h3", "h4"],
+        "References": ["h2", "h3", "h4"]
       }
   }
 }

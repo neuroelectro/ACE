@@ -119,14 +119,16 @@ class Database:
             except Exception, err:
                 print traceback.format_exc()
 
-    def file_to_sections(self, filename, pmid=None, metadata_dir=None, source_name=None, get_tables = False):
+    def file_to_sections(self, filename, pmid=None, metadata_dir=None, source_name=None, get_tables = False, html= None):
         """
         Filename is html text in file form
+        or html can be passed in as an arguement
         """
         table_dir = None
         manager = sources.SourceManager(self, table_dir)
 
-        html = open(filename).read()
+        if not html:
+            html = open(filename).read()
         source = manager.identify_source(html, source_name)
         if source is None:
             print "Can't identify source for %s" % filename
