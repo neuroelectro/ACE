@@ -264,7 +264,9 @@ class Scraper:
             elif j in ['human brain mapping', 'european journal of neuroscience',
                        'brain and behavior', 'epilepsia', 'journal of neuroimaging',
                        'glia', 'hippocampus', 'eur j neurosci', 'j comp neurol', 'j physiol']:
-                return url.replace('abstract', 'full').split(';')[0]
+                url_part = url.replace('abstract', 'full').split(';')[0]
+                url_part = url_part.replace('.com/', '.com/wol1/')
+                return url_part
             elif j == 'journal of cognitive neuroscience':
                 return url.replace('doi/abs', 'doi/full')
             elif j.startswith('frontiers in'):

@@ -23,7 +23,8 @@
         "RESULTS": ["h2", "h3"]
       },
       "discussion": {
-	  "Discussion": ["h2", "h3"]
+	  "Discussion": ["h2", "h3"],
+      "DISCUSSION": ["h2", "h3"]
       },
       "references": {
 	    "LITERATURE CITED": ["h2", "h3", "h4"],
