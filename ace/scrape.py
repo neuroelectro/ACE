@@ -14,6 +14,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.chrome.options import Options
 
 logger = logging.getLogger(__name__)
 
@@ -176,9 +177,14 @@ class Scraper:
         ''' Get HTML of full-text article. Uses either browser automation (if mode == 'browser')
         or just gets the URL directly. '''
         if self.mode == 'browser':
-            driver = webdriver.Chrome()
-            driver.get(url)
-            url = driver.current_url
+
+            try:
+                options = webdriver.ChromeOptions()
+                options.add_extension(config.ADBLOCK_ABS_PATH)
+                driver = webdriver.Chrome(chrome_options=options)
+            except Exception:
+                driver = webdriver.Chrome()
+
             driver.get(url)
 
             # Check for URL substitution and get the new one if it's changed
