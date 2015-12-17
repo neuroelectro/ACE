@@ -186,7 +186,11 @@ class Scraper:
             except Exception:
                 driver = webdriver.Chrome()
 
-            driver.get(url)
+            try:
+                driver.get(url)
+            except TimeoutException:
+                print "Loading page took too much time!"
+                pass
 
             # Check for URL substitution and get the new one if it's changed
             url = driver.current_url  # After the redirect from PubMed
@@ -194,7 +198,11 @@ class Scraper:
             new_url = self.check_for_substitute_url(url, html)
 
             if url != new_url:
-                driver.get(new_url)
+                try:
+                    driver.get(new_url)
+                except TimeoutException:
+                    print "Loading page took too much time!"
+                    pass
                 if self.journal.lower() in ['human brain mapping',
                                             'european journal of neuroscience',
                                             'brain and behavior','epilepsia', 'glia', 'j comp neurol',
