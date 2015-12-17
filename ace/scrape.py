@@ -179,6 +179,7 @@ class Scraper:
         if self.mode == 'browser':
 
             try:
+                # try using adblock plus extension if it's available - it's path needs to be set in config file
                 options = webdriver.ChromeOptions()
                 options.add_extension(config.ADBLOCK_ABS_PATH)
                 driver = webdriver.Chrome(chrome_options=options)
