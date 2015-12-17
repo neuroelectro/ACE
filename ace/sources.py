@@ -642,7 +642,7 @@ class WileySource(Source):
         tables = []
         table_containers = soup.findAll('div', {
                                         'class': 'table', 'id': re.compile('^(.*?)\-tbl\-\d+$|^t(bl)*\d+$')})
-        print "Found %d tables." % len(table_containers)
+        #print "Found %d tables." % len(table_containers)
         for (i, tc) in enumerate(table_containers):
             table_html = tc.find('table')
             try:
