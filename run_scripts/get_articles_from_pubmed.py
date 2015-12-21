@@ -28,9 +28,20 @@ oa_journal_list = ['Frontiers in Behavioral Neuroscience', 'Frontiers in Cellula
 # 'J Neurosci', 'J Physiol', 'J Neurophysiol', 'Cereb Cortex', 'Glia', 'Hippocampus', 'J Comp Neurol', 
 # 'J Neurosci Res', 'Biochem Biophys Res Commun', 'Synapse', 'Biochim Biophys Acta']
 
-# attrib_dict_non_oa = attrib_dict_oa
-# attrib_dict_non_oa['mode'] = 'browser'
-# attrib_dict_non_oa['delay'] = 30
+browser_journal_list = ['Cereb Cortex',
+                        'Eur J Neurosci',
+                        'Glia',
+                        'Hippocampus',
+                        'J Comp Neurol',
+                        'J Neurophysiol',
+                        'J Neurosci',
+                        'J Physiol',
+                        'Synapse',
+                        ]
+
+attrib_dict_non_oa = attrib_dict_oa
+attrib_dict_non_oa['mode'] = 'browser'
+attrib_dict_non_oa['delay'] = 30
 
 def create_journal_dict(journal_list, attrib_dict):
     journal_dict = {}
@@ -40,11 +51,13 @@ def create_journal_dict(journal_list, attrib_dict):
 
 journals = create_journal_dict(oa_journal_list, attrib_dict_oa)
 
+browser_journals = create_journal_dict(browser_journal_list, attrib_dict_non_oa)
+
 # Verbose output
 ace.set_logging_level('debug')
 
 #save_dir = "E:\downloaded"
-save_dir = '/home/stripathy/downloaded_html'
+save_dir = '/home/stripathy/otto/neuroelectro_full_texts/'
 output_dir = save_dir
 
 # Create temporary output dir
