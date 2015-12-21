@@ -325,6 +325,7 @@ class HighWireSource(Source):
                 t.position = t_num
                 t.label = tc.find(class_='table-label').text
                 t.number = t.label.split(' ')[-1].strip()
+                t.number = re.findall(r'\d+', t.number)[0]
                 try:
                     t.caption = tc.find(class_='table-caption').get_text()
                 except:
