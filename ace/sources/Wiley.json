@@ -9,6 +9,7 @@
   "section_tags": {
       "methods":{
 	    "MATERIALS AND METHODS": ["h2", "h3"],
+        "MATERIAL AND METHODS": ["h2", "h3"],
         "METHODS": ["h2", "h3"],
         "Methods": ["h2", "h3"],
         "Method": ["h2", "h3"],
