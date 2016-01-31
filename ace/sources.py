@@ -318,7 +318,7 @@ class HighWireSource(Source):
             url = '%s/T%d.expansion.html' % (content_url, t_num)
             table_soup = self._download_table(url)
             tc = table_soup.find(class_='table-expansion')
-            t = tc.find('table', {'id': 'table-%d' % (t_num)})
+            # t = tc.find('table', {'id': 'table-%d' % (t_num)})
             t = database.Table()
             # t = self.parse_table(t)
             if t:
