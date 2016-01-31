@@ -122,7 +122,7 @@ class Database:
     def file_to_sections(self, filename, pmid=None, metadata_dir=None, source_name=None, get_tables = False, html= None):
         """
         Filename is html text in file form
-        or html can be passed in as an arguement
+        or html can be passed in as an argument
         """
         table_dir = None
         manager = sources.SourceManager(self, table_dir)
@@ -134,9 +134,7 @@ class Database:
             print "Can't identify source for %s" % filename
             return None
 
-        sections = False
-
-        collection = {}
+        collection = {'source': source.name}
         try:
 
             config.OVERWRITE_EXISTING_ROWS = False

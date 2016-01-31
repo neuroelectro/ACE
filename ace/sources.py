@@ -323,7 +323,10 @@ class HighWireSource(Source):
             # t = self.parse_table(t)
             if t:
                 t.position = t_num
-                t.label = tc.find(class_='table-label').text
+                try:
+                    t.label = tc.find(class_='table-label').text
+                except:
+                    pass
                 try:
                     t.number = t.label.split(' ')[-1].strip()
                     t.number = re.findall(r'\d+', t.number)[0]
