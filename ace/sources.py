@@ -274,7 +274,7 @@ class Source:
             table_html = scrape.get_url(url, delay=delay)
 
         table_html = self.decode_html_entities(table_html)
-        return(BeautifulSoup(table_html), 'lmxl')
+        return BeautifulSoup(table_html, 'lxml')
 
 
 
