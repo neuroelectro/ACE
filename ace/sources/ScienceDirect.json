@@ -1,22 +1,38 @@
 {
   "name": "ScienceDirect",
   "identifiers": [
-    "title=\"ScienceDirect -The world's leading full-text scientific database\""
+    "title=\"ScienceDirect -The world's leading full-text scientific database\"",
+    "http://www.sciencedirect.com/"
   ],
   "entities": {
 
   },
   "section_tags": {
-      "results": {
-	  "Results": ["h2"]
+      "methods":{
+	    "MATERIALS AND METHODS": ["h2", "h3"],
+        "MATERIAL AND METHODS": ["h2", "h3"],
+        "METHODS": ["h2", "h3"],
+        "Methods": ["h2", "h3"],
+        "Method": ["h2", "h3"],
+        "Materials and Methods": ["h2", "h3"],
+        "Materials and methods": ["h2", "h3"],
+        "Material and Methods": ["h2", "h3"],
+        "Experimental Procedures": ["h2", "h3", "ce:section-title", "ce:section"],
+        "Experimental procedures": ["h2", "h3", "ce:section-title", "ce:section"],
+        "Experimental methods": ["h2", "h3"]
       },
-      "discussion":{
-	  "Discussion": ["h2"]
+      "results":{
+        "Results": ["h2", "h3"],
+          "RESULTS": ["h2", "h3"]
       },
-    "methods": {
-      "Experimental procedures": ["ce:section-title", "ce:section"],
-      "Experimental Procedures": ["ce:section-title", "ce:section"]
-    }
-
+      "discussion": {
+        "Discussion": ["h2", "h3"],
+        "DISCUSSION": ["h2", "h3"]
+      },
+      "references": {
+	    "LITERATURE CITED": ["h2", "h3", "h4"],
+        "REFERENCES": ["h2", "h3", "h4"],
+        "References": ["h2", "h3", "h4"]
+      }
   }
 }
