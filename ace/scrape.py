@@ -59,7 +59,7 @@ def pmc_id_to_pmid(pmc_id_list):
         id_list_str = ','.join(curr_pmc_ids)
         query = query_base % id_list_str
         data = get_url(query, 2)
-        soup = BeautifulSoup(data)
+        soup = BeautifulSoup(data, 'lxml')
         for record in soup.find_all('record'):
             if record.has_attr('pmid'):
                 pmid_list.append(record['pmid'])
@@ -333,7 +333,7 @@ class Scraper:
         self.search = search
         self.search_db = search_db
         query = self.search_pubmed(journal, search_db)
-        soup = BeautifulSoup(query)
+        soup = BeautifulSoup(query, 'lxml')
         ids = [t.string for t in soup.find_all('id')]
         
         # if search_db is pubmed central, then convert pmc_ids to pmids

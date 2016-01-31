@@ -152,7 +152,7 @@ class Source:
 
         html = html.decode('utf-8')   # Make sure we're working with unicode
         html = self.decode_html_entities(html)
-        soup = BeautifulSoup(html)
+        soup = BeautifulSoup(html, 'lxml')
         # doi = self.extract_doi(soup)
         # pmid = self.extract_pmid(soup) if pmid is None else pmid
         # metadata = scrape.get_pubmed_metadata(pmid, store=metadata_dir, save=True)
@@ -274,7 +274,7 @@ class Source:
             table_html = scrape.get_url(url, delay=delay)
 
         table_html = self.decode_html_entities(table_html)
-        return(BeautifulSoup(table_html))
+        return(BeautifulSoup(table_html), 'lmxl')
 
 
 
@@ -324,8 +324,11 @@ class HighWireSource(Source):
             if t:
                 t.position = t_num
                 t.label = tc.find(class_='table-label').text
-                t.number = t.label.split(' ')[-1].strip()
-                t.number = re.findall(r'\d+', t.number)[0]
+                try:
+                    t.number = t.label.split(' ')[-1].strip()
+                    t.number = re.findall(r'\d+', t.number)[0]
+                except:
+                    t.number = i
                 try:
                     t.caption = tc.find(class_='table-caption').get_text()
                 except:
