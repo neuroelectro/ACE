@@ -37,6 +37,8 @@ browser_journal_list = ['Cereb Cortex',
                         'J Neurosci',
                         'J Physiol',
                         'Synapse',
+                        'Neuron',
+                        'Cell',
                         ]
 
 attrib_dict_non_oa = attrib_dict_oa
@@ -52,6 +54,7 @@ def create_journal_dict(journal_list, attrib_dict):
 journals = create_journal_dict(oa_journal_list, attrib_dict_oa)
 
 browser_journals = create_journal_dict(browser_journal_list, attrib_dict_non_oa)
+journals = browser_journals
 
 # Verbose output
 ace.set_logging_level('debug')
