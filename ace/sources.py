@@ -417,7 +417,7 @@ class ScienceDirectSource(Source):
                     t.notes = tc.find(class_='tblFootnote').get_text()
                 except:
                     pass
-                t.table_html = table_html
+                t.table_html = unicode(table_html)
                 tables.append(t)
 
         self.article.tables = tables
