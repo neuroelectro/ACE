@@ -17,8 +17,8 @@
         "Materials and Methods": ["h2", "h3"],
         "Materials and methods": ["h2", "h3"],
         "Material and Methods": ["h2", "h3"],
-        "Experimental Procedures": ["h2", "h3", "ce:section-title", "ce:section"],
-        "Experimental procedures": ["h2", "h3", "ce:section-title", "ce:section"],
+        "Experimental Procedures": ["h2", "h3"],
+        "Experimental procedures": ["h2", "h3"],
         "Experimental methods": ["h2", "h3"],
         "Experimental procedure": ["h2", "h3"]
       },
