@@ -384,7 +384,7 @@ class Scraper:
                     outf.write(doc.encode('utf-8'))
                     outf.close()
                 except IOError:
-                    logger.info("Article id: %s has can't be saved to file system" % (id) )
+                    logger.info("Article id: %s can't be saved to file system" % (id) )
                     pass
                 articles_found += 1
 
