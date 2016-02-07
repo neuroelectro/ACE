@@ -377,11 +377,15 @@ class Scraper:
                     break
              
             if doc:
-                outf = open(filename, 'w')
-                # Still having encoding issues with some journals (e.g., 
-                # PLoS ONE). Why???
-                outf.write(doc.encode('utf-8'))
-                outf.close()
+                try:
+                    outf = open(filename, 'w')
+                    # Still having encoding issues with some journals (e.g.,
+                    # PLoS ONE). Why???
+                    outf.write(doc.encode('utf-8'))
+                    outf.close()
+                except IOError:
+                    logger.info("Article id: %s has can't be saved to file system" % (id) )
+                    pass
                 articles_found += 1
 
                 # Insert random delay until next request.
