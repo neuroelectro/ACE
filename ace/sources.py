@@ -408,7 +408,10 @@ class ScienceDirectSource(Source):
             if t:
                 t.position = i + 1
                 t.number = tc['data-label'].split(' ')[-1].strip()
-                t.label = tc.find('span', class_='label').text.strip()
+                try:
+                    t.label = tc.find('span', class_='label').text.strip()
+                except:
+                    pass
                 try:
                     t.caption = tc.find('p', class_='caption').get_text()
                 except:
