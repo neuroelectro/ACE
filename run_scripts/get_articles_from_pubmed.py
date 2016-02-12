@@ -9,7 +9,7 @@ import ace
 import os
 
 
-search_query = '(cell OR neuron OR glia OR astrocyte OR channel OR neurotransmitter OR "LTP" OR "synaptic plasticity" OR physiology OR biophysics) AND ("1997/01/01"[PDAT] : "2015/12/31"[PDAT])'
+search_query = '(cell OR neuron OR glia OR astrocyte OR channel OR neurotransmitter OR "LTP" OR "synaptic plasticity" OR physiology OR biophysics) AND ("2011/01/01"[PDAT] : "2016/12/31"[PDAT])'
 pmc_query = '((neuron electrophysiology) OR (neurophysiology) OR ("input resistance") OR ("resting potential" OR "resting membrane potential") OR "LTP" OR "synaptic plasticity" OR "LTD")',
 
 attrib_dict_oa = {}
@@ -22,7 +22,7 @@ attrib_dict_oa['search_db'] = 'pubmed'
 oa_journal_list = ['Frontiers in Behavioral Neuroscience', 'Frontiers in Cellular Neuroscience', 'Frontiers in Computational Neuroscience',
 'Frontiers in Human Neuroscience', 'Frontiers in Integrative Neuroscience', 'Frontiers in Molecular Neuroscience',
 'Frontiers in Molecular Neuroscience', 'Frontiers in Neural Circuits', 'Frontiers in Neuroanatomy', 'Frontiers in Neuroscience',
-'Frontiers in Systems Neuroscience', 'PLoS ONE', 'PLoS Biol', 'PLoS Comput Biol']
+'Frontiers in Systems Neuroscience', 'Frontiers in Synaptic Neuroscience', 'PLoS ONE', 'PLoS Biol', 'PLoS Comput Biol']
 
 # non_oa_journal_list = ['Brain Research', 'Neuroscience', 'Neurobiol Dis', 'Neuroscience Letters', 'Eur J Neurosci',
 # 'J Neurosci', 'J Physiol', 'J Neurophysiol', 'Cereb Cortex', 'Glia', 'Hippocampus', 'J Comp Neurol', 
@@ -54,7 +54,7 @@ def create_journal_dict(journal_list, attrib_dict):
 journals = create_journal_dict(oa_journal_list, attrib_dict_oa)
 
 browser_journals = create_journal_dict(browser_journal_list, attrib_dict_non_oa)
-journals = browser_journals
+#journals = browser_journals
 
 # Verbose output
 ace.set_logging_level('debug')
