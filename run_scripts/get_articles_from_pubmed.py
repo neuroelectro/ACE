@@ -22,7 +22,10 @@ attrib_dict_oa['search_db'] = 'pubmed'
 oa_journal_list = ['Frontiers in Behavioral Neuroscience', 'Frontiers in Cellular Neuroscience', 'Frontiers in Computational Neuroscience',
 'Frontiers in Human Neuroscience', 'Frontiers in Integrative Neuroscience', 'Frontiers in Molecular Neuroscience',
 'Frontiers in Molecular Neuroscience', 'Frontiers in Neural Circuits', 'Frontiers in Neuroanatomy', 'Frontiers in Neuroscience',
-'Frontiers in Systems Neuroscience', 'Frontiers in Synaptic Neuroscience', 'PLoS ONE', 'PLoS Biol', 'PLoS Comput Biol']
+'Frontiers in Systems Neuroscience', 'Frontiers in Synaptic Neuroscience',
+                   'Frontiers in Neurodegeneration',  'Frontiers in Neurogenomics', 'Frontiers in Neuroendocrine Science',
+                   'Frontiers in Neurogenesis', 'Frontiers in Neuropharmacology,'
+                   'PLoS ONE', 'PLoS Biol', 'PLoS Comput Biol']
 
 # non_oa_journal_list = ['Brain Research', 'Neuroscience', 'Neurobiol Dis', 'Neuroscience Letters', 'Eur J Neurosci',
 # 'J Neurosci', 'J Physiol', 'J Neurophysiol', 'Cereb Cortex', 'Glia', 'Hippocampus', 'J Comp Neurol', 
