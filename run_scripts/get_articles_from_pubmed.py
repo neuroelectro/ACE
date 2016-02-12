@@ -41,7 +41,7 @@ browser_journal_list = ['Cereb Cortex',
                         'J Physiol',
                         'Synapse',
                         'Neuron',
-                        'Cell',
+                        #'Cell',
                         ]
 
 attrib_dict_non_oa = attrib_dict_oa
@@ -63,7 +63,7 @@ browser_journals = create_journal_dict(browser_journal_list, attrib_dict_non_oa)
 ace.set_logging_level('debug')
 
 #save_dir = "E:\downloaded"
-save_dir = '/home/stripathy/otto/neuroelectro_full_texts/'
+save_dir = '/home/pavlab/stripathy/ottohome/neuroelectro_full_texts/'
 output_dir = save_dir
 
 # Create temporary output dir
