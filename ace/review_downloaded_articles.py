@@ -14,10 +14,12 @@ from ace.scrape import *
 import time
 
 
-def get_article_html_by_pmid(pmid, journal_name):
+def get_article_html_by_pmid(pmid, journal_name, mode='browser'):
     scraper = Scraper('/tmp/articles')
-    #scraper.mode = 'direct'
-    scraper.mode = 'browser'
+    if mode == 'browser':
+        scraper.mode = 'browser'
+    else:
+        scraper.mode = 'direct'
     scraper.journal = journal_name
     html = scraper.get_html_by_pmid(pmid, retmode='ref')
     return html
@@ -95,7 +97,7 @@ def check_valid_article_sections(sections):
     return valid_sections
 
 
-def download_misdownloaded_articles(path):
+def download_misdownloaded_articles(path, browser_mode = 'browser'):
     os.chdir(path)
     MIN_WAIT_TIME_BETWEEN_DOWNLOADS = 20 # seconds
     journal_name = re.split('/', path)[-2]
@@ -108,7 +110,7 @@ def download_misdownloaded_articles(path):
         pmid_str = re.search('\d+', file_name).group()
         if check_misdownloaded_article(file_name, pmid_str):
             print "article %s potentially misdownloaded, attempting to redownload " % file_name
-            html = get_article_html_by_pmid(pmid_str, journal_name)
+            html = get_article_html_by_pmid(pmid_str, journal_name, browser_mode)
             sections = db.file_to_sections(file_name, pmid_str, html= html.encode('utf8'))
             if sections:
             #if sections and 'methods' in sections and ('references' in sections or 'discussion' in sections):
