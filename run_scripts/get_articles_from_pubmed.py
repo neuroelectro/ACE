@@ -44,9 +44,6 @@ browser_journal_list = ['Cereb Cortex',
                         #'Cell',
                         ]
 
-attrib_dict_non_oa = attrib_dict_oa
-attrib_dict_non_oa['mode'] = 'browser'
-attrib_dict_non_oa['delay'] = 30
 
 def create_journal_dict(journal_list, attrib_dict):
     journal_dict = {}
@@ -54,10 +51,16 @@ def create_journal_dict(journal_list, attrib_dict):
         journal_dict[j] = attrib_dict
     return journal_dict
 
+
 journals = create_journal_dict(oa_journal_list, attrib_dict_oa)
 
-browser_journals = create_journal_dict(browser_journal_list, attrib_dict_non_oa)
-#journals = browser_journals
+# attrib_dict_non_oa = attrib_dict_oa
+# attrib_dict_non_oa['mode'] = 'browser'
+# attrib_dict_non_oa['delay'] = 30
+#
+#
+# browser_journals = create_journal_dict(browser_journal_list, attrib_dict_non_oa)
+# journals = browser_journals
 
 # Verbose output
 ace.set_logging_level('debug')
@@ -73,9 +76,10 @@ if not os.path.exists(output_dir):
 # Initialize Scraper
 scraper = Scraper(output_dir)
 
-# Loop through journals and 
+# Loop through journals and
 for j, settings in journals.items():
     scraper.retrieve_journal_articles(j, **settings)
+
 
 
 
