@@ -311,11 +311,25 @@ class HighWireSource(Source):
 
         n_tables = len(soup.find_all('span', class_='table-label'))
 
+        # some highwire press journals have tables in weird places, so we find them explicitly
+        url_soup_list = soup.find_all(lambda tag: tag.name == 'a' and tag.has_attr('data-table-url'))
+
+        if url_soup_list:
+            canonical_url = soup.find('link', {
+                                    'rel': 'canonical'})['href']
+            base_url = re.sub(canonical_url, '', content_url)
+            url_list = []
+            for l in url_soup_list:
+                temp_url = '%s%s' % (base_url, l['data-table-url'])
+                url_list.append(temp_url)
+        else:
+            url_list = ['%s/T%d.expansion.html' % (content_url, t_num) for t_num in range(n_tables)]
+
         # Now download each table and parse it
         tables = []
         for i in range(n_tables):
             t_num = i + 1
-            url = '%s/T%d.expansion.html' % (content_url, t_num)
+            url = url_list[i]
             table_soup = self._download_table(url)
             tc = table_soup.find(class_='table-expansion')
             # t = tc.find('table', {'id': 'table-%d' % (t_num)})
