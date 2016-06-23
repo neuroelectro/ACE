@@ -54,13 +54,13 @@ def create_journal_dict(journal_list, attrib_dict):
 
 journals = create_journal_dict(oa_journal_list, attrib_dict_oa)
 
-attrib_dict_non_oa = attrib_dict_oa
-attrib_dict_non_oa['mode'] = 'browser'
-attrib_dict_non_oa['delay'] = 30
-
-
-browser_journals = create_journal_dict(browser_journal_list, attrib_dict_non_oa)
-journals = browser_journals
+# attrib_dict_non_oa = attrib_dict_oa
+# attrib_dict_non_oa['mode'] = 'browser'
+# attrib_dict_non_oa['delay'] = 30
+#
+#
+# browser_journals = create_journal_dict(browser_journal_list, attrib_dict_non_oa)
+# journals = browser_journals
 
 # Verbose output
 ace.set_logging_level('debug')
