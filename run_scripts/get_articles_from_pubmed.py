@@ -74,7 +74,7 @@ journals = browser_journals
 ace.set_logging_level('debug')
 
 #save_dir = "E:\downloaded"
-save_dir = '/home/stripathy/ottohome/neuroelectro_full_texts/'
+save_dir = '/home/pavlab/stripathy/ottohome/neuroelectro_full_texts/'
 output_dir = save_dir
 
 # # Create temporary output dir
