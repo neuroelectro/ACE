@@ -7,6 +7,7 @@ Code has only been tested with the Chrome driver. """
 from ace.scrape import *
 import ace
 import os
+from ace.review_downloaded_articles import download_misdownloaded_articles
 
 
 search_query = '(cell OR neuron OR glia OR astrocyte OR channel OR neurotransmitter OR "LTP" OR "synaptic plasticity" OR physiology OR biophysics) AND ("2011/01/01"[PDAT] : "2016/12/31"[PDAT])'
@@ -24,29 +25,30 @@ oa_journal_list = ['Frontiers in Behavioral Neuroscience', 'Frontiers in Cellula
 'Frontiers in Molecular Neuroscience', 'Frontiers in Neural Circuits', 'Frontiers in Neuroanatomy', 'Frontiers in Neuroscience',
 'Frontiers in Systems Neuroscience', 'Frontiers in Synaptic Neuroscience',
                    'Frontiers in Neurodegeneration',  'Frontiers in Neurogenomics', 'Frontiers in Neuroendocrine Science',
-                   'Frontiers in Neurogenesis', 'Frontiers in Neuropharmacology,'
+                   'Frontiers in Neurogenesis', 'Frontiers in Neuropharmacology',
                    'PLoS ONE', 'PLoS Biol', 'PLoS Comput Biol']
 
 # non_oa_journal_list = ['Brain Research', 'Neuroscience', 'Neurobiol Dis', 'Neuroscience Letters', 'Eur J Neurosci',
 # 'J Neurosci', 'J Physiol', 'J Neurophysiol', 'Cereb Cortex', 'Glia', 'Hippocampus', 'J Comp Neurol', 
 # 'J Neurosci Res', 'Biochem Biophys Res Commun', 'Synapse', 'Biochim Biophys Acta']
 
-browser_journal_list = ['Cereb Cortex',
-                        'Eur J Neurosci',
-                        'Glia',
-                        'Hippocampus',
-                        'J Comp Neurol',
-                        'J Neurophysiol',
-                        'J Neurosci',
-                        'J Physiol',
-                        'Synapse',
-                        'Neuron',
-                        'Brain Research',
-                        'Neuroscience',
-                        'Neurobiol Dis',
-                        'Neuroscience Letters',
+browser_journal_list = [
+    # 'Cereb Cortex',
+                        # 'Eur J Neurosci',
+                        # 'Glia',
+                        # 'Hippocampus',
+                        # 'J Comp Neurol',
+                        # 'J Neurophysiol',
+                        # 'J Neurosci',
+                        # 'J Physiol',
+                        # 'Synapse',
+                        # 'Neuron',
+                        # 'Brain Research',
+                        # 'Neuroscience',
+                        # 'Neurobiol Dis',
+                        # 'Neuroscience Letters',
                         'eNeuro',
-                        'Physiol Rep'
+                        # 'Physiol Rep'
                         #'Cell',
                         ]
 
@@ -85,6 +87,12 @@ scraper = Scraper(output_dir)
 # Loop through journals and
 for j, settings in journals.items():
     scraper.retrieve_journal_articles(j, **settings)
+
+
+# review all downloaded articles and attenpt to redownload if necessary
+for j, settings in journals.items():
+    temp_path = '%s/html/%s' % (save_dir, j.journal)
+    download_misdownloaded_articles(temp_path, browser_mode = j.mode)
 
 
 

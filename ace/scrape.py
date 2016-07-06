@@ -248,12 +248,17 @@ class Scraper:
                 r.encoding = 'utf-8'
             return r.text
 
-
-
-
     def get_html_by_pmid(self, pmid, retmode='ref'):
 
-        query = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&id=%s&cmd=prlinks&retmode=%s" % (pmid, retmode)
+        # get article doi from pubmed page
+        article_pubmed_dict = get_pubmed_metadata(pmid)
+
+        if 'doi' in article_pubmed_dict.keys():
+            doi = article_pubmed_dict['doi']
+            query = "http://dx.doi.org/%s" % doi
+        else:
+            query = "http://eutils.ncbi.nlm.nih.gov/entrez/eutils/elink.fcgi?dbfrom=pubmed&id=%s&cmd=prlinks&retmode=%s" % (pmid, retmode)
+
         logger.info(query)
         return self.get_html(query)
 
