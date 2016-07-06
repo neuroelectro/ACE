@@ -33,7 +33,7 @@ oa_journal_list = ['Frontiers in Behavioral Neuroscience', 'Frontiers in Cellula
 # 'J Neurosci Res', 'Biochem Biophys Res Commun', 'Synapse', 'Biochim Biophys Acta']
 
 browser_journal_list = [
-    # 'Cereb Cortex',
+                         'Cereb Cortex',
                         # 'Eur J Neurosci',
                         # 'Glia',
                         # 'Hippocampus',
@@ -74,25 +74,27 @@ journals = browser_journals
 ace.set_logging_level('debug')
 
 #save_dir = "E:\downloaded"
-save_dir = '/home/pavlab/stripathy/ottohome/neuroelectro_full_texts/'
+save_dir = '/home/stripathy/ottohome/neuroelectro_full_texts/'
 output_dir = save_dir
 
-# Create temporary output dir
-if not os.path.exists(output_dir):
-    os.makedirs(output_dir)
+# # Create temporary output dir
+# if not os.path.exists(output_dir):
+#     os.makedirs(output_dir)
 
 # Initialize Scraper
 scraper = Scraper(output_dir)
 
-# Loop through journals and
-for j, settings in journals.items():
-    scraper.retrieve_journal_articles(j, **settings)
+# # Loop through journals and
+# for j, settings in journals.items():
+#     scraper.retrieve_journal_articles(j, **settings)
 
 
 # review all downloaded articles and attenpt to redownload if necessary
+print journals
 for j, settings in journals.items():
-    temp_path = '%s/html/%s' % (save_dir, j.journal)
-    download_misdownloaded_articles(temp_path, browser_mode = j.mode)
+    print j, settings
+    temp_path = '%shtml/%s/' % (save_dir, j)
+    download_misdownloaded_articles(temp_path, browser_mode = settings['mode'])
 
 
 
