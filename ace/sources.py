@@ -323,7 +323,7 @@ class HighWireSource(Source):
                 temp_url = '%s%s' % (base_url, l['data-table-url'])
                 url_list.append(temp_url)
         else:
-            url_list = ['%s/T%d.expansion.html' % (content_url, t_num) for t_num in range(n_tables)]
+            url_list = ['%s/T%d.expansion.html' % (content_url, t_num+1) for t_num in range(n_tables)]
 
         # Now download each table and parse it
         tables = []
@@ -332,6 +332,7 @@ class HighWireSource(Source):
             url = url_list[i]
             table_soup = self._download_table(url)
             tc = table_soup.find(class_='table-expansion')
+
             # t = tc.find('table', {'id': 'table-%d' % (t_num)})
             t = database.Table()
             # t = self.parse_table(t)

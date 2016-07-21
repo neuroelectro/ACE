@@ -124,6 +124,8 @@ def download_misdownloaded_articles(path, browser_mode = 'browser'):
                 time.sleep(MIN_WAIT_TIME_BETWEEN_DOWNLOADS)
             else:
                 print "article %s failed redownload, moving on" % file_name
+        else:
+            print "existing article %s is fine, moving on" % file_name
 
 
 def prog(num,denom):
